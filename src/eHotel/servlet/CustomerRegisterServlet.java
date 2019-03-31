@@ -26,10 +26,12 @@ public class CustomerRegisterServlet extends HttpServlet{
 		HttpSession session = req.getSession();
 //		employee account = new employee();
 		String custSSN = req.getParameter("custSSN");
-		String custName = req.getParameter("custName");
+		String custFName = req.getParameter("custFName");
+		String custLName = req.getParameter("custLName");
+		String custEmail = req.getParameter("custEmail");
 		String custPwd = req.getParameter("custPwd");
 		
-		String[] param = new String[] {custSSN,custName,custPwd};
+		String[] param = new String[] {custSSN,custFName, custLName, custEmail,custPwd};
 		
 		PostgreSqlConn con = new PostgreSqlConn();
 		boolean pwdfromdb = con.insertNewCustomer(param);
@@ -39,13 +41,13 @@ public class CustomerRegisterServlet extends HttpServlet{
 		if (pwdfromdb) {			
 				System.out.println("success");
 				
-				ArrayList<Room> bookedRooms = con.getbookedRooms(custSSN);
+				ArrayList<Room> bookedRooms = con.getAllAvailRooms();
 				
 				ArrayList<Room> allRooms = con.getAllAvailRooms();
 				
 				System.out.println(allRooms);
 				
-				req.setAttribute("CustName", custName);
+				req.setAttribute("CustName", custFName);
 				req.setAttribute("bookedRooms", bookedRooms);
 				req.setAttribute("allRooms", allRooms);
 

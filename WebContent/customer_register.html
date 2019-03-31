@@ -7,7 +7,7 @@
 
 	function validate() {
 		var custSSN = document.getElementById("custSSN");
-		var custName = document.getElementById("custName");
+		var custFName = document.getElementById("custFName");
 		var custPwd = document.getElementById("custPwd");
 		var custPwdagain = document.getElementById("custPwdagain");
 		if(custSSN.value == "" || custName.value == "" || custPwd.value == "" || custPwdagain.value == "" ){
@@ -15,8 +15,8 @@
 			return false;
 		}
 		
-		else if(custSSN.value.length != 8){
-			alert("The length of SSN needs to be 8");
+		else if(custSSN.value.length != 9){
+			alert("The length of SSN needs to be 9");
 			return false;
 		}
 		
@@ -33,7 +33,9 @@
 <body>
 <form method = "post" action="cusRegister">
 please input your SSN:<input type="text" id="custSSN" name="custSSN"><br><br>
-please input your name:<input type="text" id="custName" name="custName"><br><br>
+please input your first name:<input type="text" id="custFName" name="custFName"><br><br>
+please input your first name:<input type="text" id="custLName" name="custLName"><br><br>
+please input your email:<input type="text" id="custEmail" name="custEmail"><br><br>
 please input your password:<input type="password" id="custPwd" name="custPwd"><br><br>
 please input your password again:<input type="password" id="custPwdagain" name="custPwdagain"><br><br>
 <button type="submit" value="submit" onclick="return validate();">submit</button>

@@ -27,7 +27,7 @@
 						}
 						if (broomList != null) {
 							for (Room room : broomList) {
-								String roominfo = room.getRoom_no() + "---" + room.getRoom_status();
+								String roominfo = Integer.toString(room.getRoom_no());
 					%>
 					<li><%=roominfo%></li>
 					<%

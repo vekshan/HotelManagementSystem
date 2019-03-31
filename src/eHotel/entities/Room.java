@@ -2,42 +2,67 @@ package eHotel.entities;
 
 public class Room {
 	
-	private String room_no;
-	private String room_status;
-	private String customer_ssn;
+	private String h_name;
+	private int room_no;
+	private int capacity;
+	private double price;
+
 	
 	public Room() {
 		
 	}
-	
-	public Room(String room_no, String room_status) {
+
+
+	public Room(String h_name, int room_no, int capacity, double price) {
+		super();
+		this.h_name = h_name;
 		this.room_no = room_no;
-		this.room_status = room_status;
+		this.capacity = capacity;
+		this.price = price;
 	}
 
-	public String getRoom_no() {
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+
+
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
+
+	public String getH_name() {
+		return h_name;
+	}
+
+
+	public void setH_name(String h_name) {
+		this.h_name = h_name;
+	}
+
+
+	public int getRoom_no() {
 		return room_no;
 	}
 
-	public void setRoom_no(String room_no) {
+
+	public void setRoom_no(int room_no) {
 		this.room_no = room_no;
 	}
 
-	public String getRoom_status() {
-		return room_status;
+
+	public double getPrice() {
+		return price;
 	}
 
-	public void setRoom_status(String room_status) {
-		this.room_status = room_status;
-	}
 
-	public String getCustomer_ssn() {
-		return customer_ssn;
+	public void setPrice(double price) {
+		this.price = price;
 	}
-
-	public void setCustomer_ssn(String customer_ssn) {
-		this.customer_ssn = customer_ssn;
-	}
+	
 	
 
 }
