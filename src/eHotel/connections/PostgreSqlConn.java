@@ -2,6 +2,7 @@ package eHotel.connections;
 
 import java.sql.*;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -108,11 +109,12 @@ public class  PostgreSqlConn{
 			ps = db.prepareStatement("select * from project.room" );
 			rs = ps.executeQuery();
 			while(rs.next()){
+				int chain_id =rs.getInt("chain_id");
 				String h_name = rs.getString("h_name");
 				int room_no = rs.getInt("room_no");
 				int capacity = rs.getInt("capacity");
 				double price = rs.getDouble("price");
-				Room room = new Room(h_name,room_no,capacity,price);
+				Room room = new Room(chain_id,h_name,room_no,capacity,price);
 				Rooms.add(room);
 			}
 		} catch (SQLException e) {
@@ -125,6 +127,41 @@ public class  PostgreSqlConn{
 		return Rooms;
 		
 	}
+	
+	public String bookRoom(String custSSN, String chain_id, String h_name, String roomno){
+		getConn();
+		
+        try{
+			
+        	ps = db.prepareStatement("INSERT INTO project.booking(startdate, enddate, c_ssn, chain_id, h_name, room_no) VALUES (?, ?, ?, ?, ?, ?)");
+        	SimpleDateFormat textFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+        	String paramDateAsString = "2007-12-25"; 
+        	java.util.Date myDate = null; 
+        	try { 
+				myDate = textFormat.parse(paramDateAsString);
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	ps.setDate(1,new java.sql.Date(myDate.getTime()));
+        	ps.setDate(2, new java.sql.Date(myDate.getTime()));
+        	ps.setInt(3, Integer.parseInt(custSSN));
+        	ps.setInt(4, Integer.parseInt(chain_id));
+        	ps.setString(5, h_name);
+        	ps.setInt(6, Integer.parseInt(roomno));
+        	ps.executeUpdate();
+            return custSSN;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return "";	 
+        }finally {
+        	closeDB();
+        }
+		      
+    }
+    
 	
 	
 	

@@ -22,13 +22,18 @@ public class RoombookServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 //		employee account = new employee();
-		String custName = req.getParameter("custName");
+		String custSSN = req.getParameter("custName");
+		String chain_id = req.getParameter("chain_id");
+		String h_name = req.getParameter("h_name");
 		String roomno = req.getParameter("roomno");
+		
+		System.out.println(h_name+roomno);
+		
 		
 		
 		PostgreSqlConn con = new PostgreSqlConn();
 		
-		String userSSN = con.bookRoom(custName,roomno);
+		String userSSN = con.bookRoom(custSSN,chain_id,h_name,roomno);
 		
 //		[0]:name,[1]:pwd
 //		String[] pwdfromdb = con.getuserinforbycustSSN(userSSN);
@@ -37,12 +42,12 @@ public class RoombookServlet extends HttpServlet {
 //		
 		if (userSSN.length()!=0) {			
 			
-			ArrayList<Room> bookedRooms = con.getbookedRooms(userSSN);
+			ArrayList<Room> bookedRooms = con.getAllAvailRooms();
 			
 			ArrayList<Room> allRooms = con.getAllAvailRooms();
 			
 			
-			req.setAttribute("CustName", custName);
+			req.setAttribute("CustName", custSSN);
 			req.setAttribute("bookedRooms", bookedRooms);
 			req.setAttribute("allRooms", allRooms);
 

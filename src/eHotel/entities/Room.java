@@ -2,6 +2,7 @@ package eHotel.entities;
 
 public class Room {
 	
+	private int chain_id;
 	private String h_name;
 	private int room_no;
 	private int capacity;
@@ -12,7 +13,14 @@ public class Room {
 		
 	}
 
-
+	public Room(int chain_id, String h_name, int room_no, int capacity, double price) {
+		this.chain_id = chain_id;
+		this.h_name = h_name;
+		this.room_no = room_no;
+		this.capacity = capacity;
+		this.price = price;
+	}
+	
 	public Room(String h_name, int room_no, int capacity, double price) {
 		super();
 		this.h_name = h_name;
@@ -21,6 +29,14 @@ public class Room {
 		this.price = price;
 	}
 
+
+	public int getChain_id() {
+		return chain_id;
+	}
+
+	public void setChain_id(int chain_id) {
+		this.chain_id = chain_id;
+	}
 
 	public int getCapacity() {
 		return capacity;

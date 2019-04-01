@@ -33,7 +33,7 @@ public class CustomerloginServlet extends HttpServlet {
 		if (pwd.equals(pwdfromdb)) {	
 			req.setAttribute("userSSN", userSSN);
 			//resp.sendRedirect("login_success.jsp");
-			resp.sendRedirect("login_success.jsp?userSSN="+userSSN);
+			//resp.sendRedirect("login_success.jsp?userSSN="+userSSN);
 			/*ArrayList<Room> bookedRooms = con.getbookedRooms(userSSN);
 			
 			ArrayList<Room> allRooms = con.getAllAvailRooms();
@@ -43,8 +43,20 @@ public class CustomerloginServlet extends HttpServlet {
 			req.setAttribute("bookedRooms", bookedRooms);
 			req.setAttribute("allRooms", allRooms);
 
-			req.getRequestDispatcher("booking.jsp").forward(req, resp);*/
-			return;	
+			req.getRequestDispatcher("booking.jsp").forward(req, resp);
+			return;	*/
+			ArrayList<Room> bookedRooms = con.getAllAvailRooms();
+			
+			ArrayList<Room> allRooms = con.getAllAvailRooms();
+			
+			System.out.println(allRooms);
+			
+			req.setAttribute("CustName", userSSN);
+			req.setAttribute("bookedRooms", bookedRooms);
+			req.setAttribute("allRooms", allRooms);
+
+			req.getRequestDispatcher("booking.jsp").forward(req, resp);
+			return;			
 		}
 		resp.sendRedirect("login_failure.jsp");
 		return;

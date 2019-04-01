@@ -12,7 +12,10 @@
 
 	<%
 		String CustName = (String) request.getAttribute("CustName");
+		String chain_id ="";
+		String h_name= "";
 	%>
+
 	<form method="post" action="roombook">
 		<h4>
 			Welcome,
@@ -48,14 +51,21 @@
 						if (roomList != null) {
 							for (Room room : roomList) {
 								/* String roominfo = room.getRoom_no() + "---" + room.getRoom_status(); */
+								chain_id = Integer.toString(room.getChain_id());
+								h_name = room.getH_name();
+							
+
 					%>					
-						<option><%=room.getRoom_no()%></option>
+						<option><%=Integer.toString(room.getRoom_no())%></option>
 
 					<%
 						}
 						}
 					%>
 				</select>
+				<input type="hidden" name="chain_id" value="<%=chain_id%>" />
+				<input type="hidden" name="h_name" value="<%=h_name%>" />
+				
 				<button type="submit" onclick="return confirm('book?');">book</button>
 	</form>
 
