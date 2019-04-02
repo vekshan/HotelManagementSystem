@@ -128,6 +128,52 @@ public class  PostgreSqlConn{
 		
 	}
 	
+public  ArrayList<Room> searchRooms(int capacity, String area, String startdateStr, String enddateStr){
+		
+		getConn();
+		
+		ArrayList<Room> Rooms = new ArrayList<Room>();
+		SimpleDateFormat textFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+    	java.util.Date startdate = null, enddate = null; 
+    	try { 
+			startdate = textFormat.parse(startdateStr);
+			enddate= textFormat.parse(enddateStr);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			ps = db.prepareStatement("select * from project.room natural join project.hotel natural join project.hotel_chain where capacity = ? and area like ? except select chain_id, h_name, room_no, capacity, price,street,area,no_of_rooms,email, category, no_of_hotels,hc_name  \r\n" + 
+					"	from project.room natural join project.hotel natural join project.hotel_chain natural join project.booking\r\n" + 
+					"	where (? <= enddate and ? >= startdate);" );
+			ps.setInt(1, capacity);
+			ps.setString(2, area+"%");
+			ps.setDate(3,new java.sql.Date(startdate.getTime()));
+			ps.setDate(4,new java.sql.Date(enddate.getTime()));
+			
+			rs = ps.executeQuery();
+			while(rs.next()){
+				int chain_id =rs.getInt("chain_id");
+				String h_name = rs.getString("h_name");
+				int room_no = rs.getInt("room_no");
+				//int capacity = rs.getInt("capacity");
+				double price = rs.getDouble("price");
+				Room room = new Room(chain_id,h_name,room_no,capacity,price);
+				Rooms.add(room);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+        	closeDB();
+        }
+					
+		return Rooms;
+		
+	}
+	
 	public String bookRoom(String custSSN, String chain_id, String h_name, String roomno){
 		getConn();
 		
@@ -135,17 +181,19 @@ public class  PostgreSqlConn{
 			
         	ps = db.prepareStatement("INSERT INTO project.booking(startdate, enddate, c_ssn, chain_id, h_name, room_no) VALUES (?, ?, ?, ?, ?, ?)");
         	SimpleDateFormat textFormat = new SimpleDateFormat("yyyy-MM-dd"); 
-        	String paramDateAsString = "2007-12-25"; 
-        	java.util.Date myDate = null; 
+        	String paramDateAsString = "2007-12-25";
+        	String paramDateAsString1 = "2007-12-30";
+        	java.util.Date myDate = null, myDate1 = null; 
         	try { 
 				myDate = textFormat.parse(paramDateAsString);
+				myDate1= textFormat.parse(paramDateAsString1);
 				
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         	ps.setDate(1,new java.sql.Date(myDate.getTime()));
-        	ps.setDate(2, new java.sql.Date(myDate.getTime()));
+        	ps.setDate(2, new java.sql.Date(myDate1.getTime()));
         	ps.setInt(3, Integer.parseInt(custSSN));
         	ps.setInt(4, Integer.parseInt(chain_id));
         	ps.setString(5, h_name);

@@ -15,12 +15,28 @@
 		String chain_id ="";
 		String h_name= "";
 	%>
-
-	<form method="post" action="roombook">
-		<h4>
+	
+	<h4>
 			Welcome,
 			<%=CustName%><h4>
-				<h4>Here are the room(s) you booked</h4>
+				
+	
+	<form method="post" action="roomsearch">
+					  <label for="area">Area:</label>
+					  <input type="text" id="area" placeholder="Enter Area" name="area">
+					  <label for="capacity">Capacity:</label>
+					  <input type="number" id="capacity" placeholder="Enter capacity" name="capacity">
+					  <label for="startdate">Starting on:</label>
+					  <input type="date" id="startdate" name="startdate">
+					  <label for="enddate">Ending on:</label>
+					  <input type="date" id="enddate" name="enddate">
+					  <input type="hidden" name="custName" value="<%=CustName%>" />
+					
+					  <button type="submit">Search</button>
+	</form>
+
+	<form method="post" action="roombook">
+	<h4>Here are the room(s) you booked</h4>
 				<ul>
 					<%
 						Object obj1 = request.getAttribute("bookedRooms");
@@ -39,7 +55,8 @@
 					%>
 				</ul>
 				<input type="hidden" name="custName" value="<%=CustName%>" />
-				<h4>Here are avaiable rooms</h4>
+					
+				<h4>Here are all available rooms</h4>
 
 				<select name = "roomno">
 					<%
