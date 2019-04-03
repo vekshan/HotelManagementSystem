@@ -1,5 +1,7 @@
 package eHotel.entities;
 
+import java.sql.Date;
+
 public class Room {
 	
 	private int chain_id;
@@ -7,8 +9,37 @@ public class Room {
 	private int room_no;
 	private int capacity;
 	private double price;
+	private Date startdate;
+	private Date enddate;
 
 	
+	public Date getStartdate() {
+		return startdate;
+	}
+
+	public void setStartdate(Date startdate) {
+		this.startdate = startdate;
+	}
+
+	public Date getEnddate() {
+		return enddate;
+	}
+
+	public void setEnddate(Date enddate) {
+		this.enddate = enddate;
+	}
+
+	public Room(int chain_id, String h_name, int room_no, int capacity, double price, Date startdate, Date enddate) {
+		super();
+		this.chain_id = chain_id;
+		this.h_name = h_name;
+		this.room_no = room_no;
+		this.capacity = capacity;
+		this.price = price;
+		this.startdate = startdate;
+		this.enddate = enddate;
+	}
+
 	public Room() {
 		
 	}

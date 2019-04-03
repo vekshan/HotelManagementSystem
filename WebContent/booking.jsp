@@ -48,7 +48,8 @@
 						}
 						if (broomList != null) {
 							for (Room room : broomList) {
-								String roominfo = Integer.toString(room.getRoom_no());
+							
+								String roominfo = "Room " + Integer.toString(room.getRoom_no())+" at " + room.getH_name() +" hotel from " + room.getStartdate() + " to " + room.getEnddate();
 					%>
 					<li><%=roominfo%></li>
 					<%
@@ -60,7 +61,7 @@
 					
 				<h4>Here are all available rooms</h4>
 
-				<select>
+				<select name ="roominfo">
 					<%
 						Object obj = request.getAttribute("allRooms");
 						ArrayList<Room> roomList = null;
@@ -73,19 +74,24 @@
 								chain_id = Integer.toString(room.getChain_id());
 								h_name = room.getH_name();
 								roomno = Integer.toString(room.getRoom_no());
-								roominfoChoice = "Room " + roomno +" at " + h_name +" hotel.";							
+								roominfoChoice = "Room " + roomno +" at " + h_name +" hotel";		
+								String val = chain_id+","+ h_name+","+ roomno;
 
 					%>					
-						<option><%=roominfoChoice%></option>
-
+						<option value="<%=val%>"><%=roominfoChoice%></option>
+						
 					<%
 						}
+						
 						}
 					%>
+						<input type="hidden" name="chain_id" value="<%=chain_id%>" />
+						<input type="hidden" name="h_name" value="<%=h_name%>" />
+						<input type="hidden" name="roomno" value="<%=roomno%>" />
+					
 				</select>
-				<input type="hidden" name="chain_id" value="<%=chain_id%>" />
-				<input type="hidden" name="h_name" value="<%=h_name%>" />
-				<input type="hidden" name="roomno" value="<%=h_name%>" />
+				
+				
 				
 				<button type="submit" onclick="return confirm('book?');">book</button>
 	</form>

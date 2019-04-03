@@ -53,6 +53,29 @@ public class  PostgreSqlConn{
 				e.printStackTrace();
 			}
 	}
+	
+	public String getuserinforbyempSSN(int param){
+		getConn();
+
+		String pwd = new String();
+		
+        try{
+            ps = db.prepareStatement("select * from project.employee where e_ssn=?");
+            
+            ps.setInt(1, param);	               
+            rs = ps.executeQuery();
+
+			while(rs.next()) {
+				pwd = rs.getString("password");
+			}
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally {
+        	closeDB();
+        }
+		return pwd;       
+    }
 
 	public String getuserinforbycustSSN(int param){
 		getConn();
@@ -145,11 +168,11 @@ public  ArrayList<Room> searchRooms(int capacity, String area, String startdateS
 		}
 		
 		try {
-			ps = db.prepareStatement("select * from project.room natural join project.hotel natural join project.hotel_chain where capacity = ? and area like ? except select chain_id, h_name, room_no, capacity, price,street,area,no_of_rooms,email, category, no_of_hotels,hc_name  \r\n" + 
+			ps = db.prepareStatement("select * from project.room natural join project.hotel natural join project.hotel_chain where capacity = ? and LOWER(area) like ? except select chain_id, h_name, room_no, capacity, price,street,area,no_of_rooms,email, category, no_of_hotels,hc_name  \r\n" + 
 					"	from project.room natural join project.hotel natural join project.hotel_chain natural join project.booking\r\n" + 
 					"	where (? <= enddate and ? >= startdate);" );
 			ps.setInt(1, capacity);
-			ps.setString(2, area+"%");
+			ps.setString(2, area.toLowerCase()+"%");
 			ps.setDate(3,new java.sql.Date(startdate.getTime()));
 			ps.setDate(4,new java.sql.Date(enddate.getTime()));
 			
@@ -169,6 +192,39 @@ public  ArrayList<Room> searchRooms(int capacity, String area, String startdateS
 		} finally {
         	closeDB();
         }
+					
+		return Rooms;
+		
+	}
+
+	public  ArrayList<Room> getbookedRooms(String custSSN){
+		
+		getConn();
+		
+		ArrayList<Room> Rooms = new ArrayList<Room>();
+		
+		try {
+			ps = db.prepareStatement("select * from project.booking natural join project.room where c_ssn='"+custSSN+"'");
+			rs = ps.executeQuery();
+			while(rs.next()){
+				
+				int chain_id =rs.getInt("chain_id");
+				String h_name = rs.getString("h_name");
+				int room_no = rs.getInt("room_no");
+				int capacity = rs.getInt("capacity");
+				double price = rs.getDouble("price");
+				Date startdate =rs.getDate("startdate");
+				Date enddate = rs.getDate("enddate");
+				
+				Room room = new Room(chain_id,h_name,room_no,capacity,price,startdate,enddate);
+				Rooms.add(room);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+	    	closeDB();
+	    }
 					
 		return Rooms;
 		

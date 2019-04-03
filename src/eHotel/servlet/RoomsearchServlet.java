@@ -30,14 +30,16 @@ public class RoomsearchServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
+		String area ="";
+		
 		String custSSN = request.getParameter("custName");
-		String area = request.getParameter("area");
+		area = request.getParameter("area");
 		int capacity = Integer.parseInt(request.getParameter("capacity"));
 		String startdate = request.getParameter("startdate");
 		String enddate = request.getParameter("enddate");
 		
 		PostgreSqlConn con = new PostgreSqlConn();
-		ArrayList<Room> bookedRooms = con.getAllAvailRooms();
+		ArrayList<Room> bookedRooms = con.getbookedRooms(custSSN);
 		ArrayList<Room> matchedRooms = con.searchRooms(capacity, area,startdate,enddate);
 		
 		request.setAttribute("CustName", custSSN);

@@ -27,13 +27,13 @@ public class RoombookServlet extends HttpServlet {
 		String h_name = req.getParameter("h_name");
 		String roomno = req.getParameter("roomno");
 		
-		System.out.println(h_name+roomno);
+		String[] values =req.getParameter("roominfo").split(",");
 		
 		
 		
 		PostgreSqlConn con = new PostgreSqlConn();
 		
-		String userSSN = con.bookRoom(custSSN,chain_id,h_name,roomno);
+		String userSSN = con.bookRoom(custSSN,values[0],values[1],values[2]);
 		
 //		[0]:name,[1]:pwd
 //		String[] pwdfromdb = con.getuserinforbycustSSN(userSSN);
@@ -42,7 +42,7 @@ public class RoombookServlet extends HttpServlet {
 //		
 		if (userSSN.length()!=0) {			
 			
-			ArrayList<Room> bookedRooms = con.getAllAvailRooms();
+			ArrayList<Room> bookedRooms = con.getbookedRooms(userSSN);
 			
 			ArrayList<Room> allRooms = con.getAllAvailRooms();
 			
