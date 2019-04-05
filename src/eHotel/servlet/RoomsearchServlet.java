@@ -45,6 +45,8 @@ public class RoomsearchServlet extends HttpServlet {
 		request.setAttribute("CustName", custSSN);
 		request.setAttribute("bookedRooms", bookedRooms);
 		request.setAttribute("allRooms", matchedRooms);
+		request.setAttribute("startdate", startdate);
+		request.setAttribute("enddate", enddate);
 		request.getRequestDispatcher("booking.jsp").forward(request, response);
 		return;		
 		

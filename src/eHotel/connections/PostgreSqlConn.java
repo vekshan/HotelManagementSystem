@@ -76,6 +76,7 @@ public class  PostgreSqlConn{
         }
 		return pwd;       
     }
+	
 
 	public String getuserinforbycustSSN(int param){
 		getConn();
@@ -121,6 +122,10 @@ public class  PostgreSqlConn{
         	closeDB();
         }	       
     }
+	
+	
+	
+
 	
 	public  ArrayList<Room> getAllAvailRooms(){
 		
@@ -230,6 +235,8 @@ public  ArrayList<Room> searchRooms(int capacity, String area, String startdateS
 		
 	}
 	
+	
+	
 	public String bookRoom(String custSSN, String chain_id, String h_name, String roomno){
 		getConn();
 		
@@ -265,6 +272,101 @@ public  ArrayList<Room> searchRooms(int capacity, String area, String startdateS
         }
 		      
     }
+	
+	public boolean createRenting(String e_ssn,String c_ssn, String chain_id, String h_name, String room_no,String startdateStr, String enddateStr, double payment) {
+		getConn();
+		
+		SimpleDateFormat textFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+    	java.util.Date startdate = null, enddate = null; 
+    	try { 
+			startdate = textFormat.parse(startdateStr);
+			enddate= textFormat.parse(enddateStr);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try{
+        	
+			
+			ps = db.prepareStatement("INSERT INTO project.renting (startdate, enddate, payment, c_ssn, e_ssn, chain_id, h_name, room_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			ps.setDate(1,new java.sql.Date(startdate.getTime()));
+        	ps.setDate(2, new java.sql.Date(enddate.getTime()));
+        	ps.setDouble(3, payment);
+        	ps.setInt(4, Integer.parseInt(c_ssn));
+        	ps.setInt(5, Integer.parseInt(e_ssn));
+        	ps.setInt(6,Integer.parseInt(chain_id));
+        	ps.setString(7,h_name);
+        	ps.setInt(8,Integer.parseInt(room_no));
+        	
+        	
+        	ps.executeUpdate();
+			
+            
+            return true;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }finally {
+        	closeDB();
+        }	       
+	}
+	
+	
+	public boolean convertToRenting(int bid, int e_ssn) {
+		getConn();
+		Date startdate = null;
+		Date enddate = null;
+		double payment = 0;
+		int c_ssn = 0;
+		int chain_id = 0;
+		String h_name = null;
+		int room_no = 0;
+		
+		
+		try{
+        	
+            
+			ps = db.prepareStatement("select * from project.booking where bid=?");
+			ps.setInt(1, bid);	               
+            rs = ps.executeQuery();
+
+			while(rs.next()) {
+				chain_id =rs.getInt("chain_id");
+				h_name = rs.getString("h_name");
+				room_no = rs.getInt("room_no");
+				payment = rs.getDouble("payment");
+				startdate = rs.getDate("startdate");
+				enddate = rs.getDate("enddate");
+				c_ssn = rs.getInt("c_ssn");
+			}
+			
+			ps = db.prepareStatement("INSERT INTO project.renting (startdate, enddate, payment, c_ssn, e_ssn, bid, chain_id, h_name, room_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			ps.setDate(1,startdate);
+        	ps.setDate(2, enddate);
+        	ps.setDouble(3, payment);
+        	ps.setInt(4, c_ssn);
+        	ps.setInt(5, e_ssn);
+        	ps.setInt(6, bid);
+        	ps.setInt(7,chain_id);
+        	ps.setString(8,h_name);
+        	ps.setInt(9,room_no);
+        	
+        	
+        	ps.executeUpdate();
+			
+            
+            return true;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }finally {
+        	closeDB();
+        }	       
+	}
     
 	
 	

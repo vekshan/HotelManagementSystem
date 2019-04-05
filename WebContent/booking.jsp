@@ -16,6 +16,9 @@
 		String h_name= "";
 		String roomno= "";
 		String roominfoChoice = "";
+		String startdate = (String)request.getAttribute("startdate");
+		String enddate = (String)request.getAttribute("enddate");
+		
 	%>
 	
 	<h4>
@@ -75,7 +78,7 @@
 								h_name = room.getH_name();
 								roomno = Integer.toString(room.getRoom_no());
 								roominfoChoice = "Room " + roomno +" at " + h_name +" hotel";		
-								String val = chain_id+","+ h_name+","+ roomno;
+								String val = chain_id+","+ h_name+","+ roomno +","+ startdate + ","+enddate;
 
 					%>					
 						<option value="<%=val%>"><%=roominfoChoice%></option>

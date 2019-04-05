@@ -35,6 +35,9 @@ public class RoombookServlet extends HttpServlet {
 		
 		String userSSN = con.bookRoom(custSSN,values[0],values[1],values[2]);
 		
+		System.out.println(values[3]);
+		System.out.println(values[4]);
+		
 //		[0]:name,[1]:pwd
 //		String[] pwdfromdb = con.getuserinforbycustSSN(userSSN);
 //		
