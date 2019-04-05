@@ -27,13 +27,14 @@
 				
 	
 	<form method="post" action="roomsearch">
+	<h4>Please enter your criteria before booking</h4>
 					  <label for="area">Area:</label>
 					  <input type="text" id="area" placeholder="Enter Area" name="area">
-					  <label for="capacity">Capacity:</label>
+					  <label for="capacity">Capacity(Mandatory):</label>
 					  <input type="number" id="capacity" placeholder="Enter capacity" name="capacity">
-					  <label for="startdate">Starting on:</label>
+					  <label for="startdate">Starting on(Mandatory):</label>
 					  <input type="date" id="startdate" name="startdate">
-					  <label for="enddate">Ending on:</label>
+					  <label for="enddate">Ending on(Mandatory):</label>
 					  <input type="date" id="enddate" name="enddate">
 					  <input type="hidden" name="custName" value="<%=CustName%>" />
 					

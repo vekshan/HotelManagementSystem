@@ -237,33 +237,31 @@ public  ArrayList<Room> searchRooms(int capacity, String area, String startdateS
 	
 	
 	
-	public String bookRoom(String custSSN, String chain_id, String h_name, String roomno){
+	public String bookRoom(String custSSN, String chain_id, String h_name, String roomno, String startdateStr, String enddateStr){
 		getConn();
 		
         try{
 			
         	ps = db.prepareStatement("INSERT INTO project.booking(startdate, enddate, c_ssn, chain_id, h_name, room_no) VALUES (?, ?, ?, ?, ?, ?)");
         	SimpleDateFormat textFormat = new SimpleDateFormat("yyyy-MM-dd"); 
-        	String paramDateAsString = "2007-12-25";
-        	String paramDateAsString1 = "2007-12-30";
-        	java.util.Date myDate = null, myDate1 = null; 
+        	java.util.Date startdate = null, enddate = null; 
         	try { 
-				myDate = textFormat.parse(paramDateAsString);
-				myDate1= textFormat.parse(paramDateAsString1);
+				startdate = textFormat.parse(startdateStr);
+				enddate= textFormat.parse(enddateStr);
 				
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	ps.setDate(1,new java.sql.Date(myDate.getTime()));
-        	ps.setDate(2, new java.sql.Date(myDate1.getTime()));
+        	ps.setDate(1,new java.sql.Date(startdate.getTime()));
+        	ps.setDate(2, new java.sql.Date(enddate.getTime()));
         	ps.setInt(3, Integer.parseInt(custSSN));
         	ps.setInt(4, Integer.parseInt(chain_id));
         	ps.setString(5, h_name);
         	ps.setInt(6, Integer.parseInt(roomno));
         	ps.executeUpdate();
-            return custSSN;
-
+            return custSSN; 
+            
         }catch(SQLException e){
             e.printStackTrace();
             return "";	 

@@ -33,7 +33,7 @@ public class RoombookServlet extends HttpServlet {
 		
 		PostgreSqlConn con = new PostgreSqlConn();
 		
-		String userSSN = con.bookRoom(custSSN,values[0],values[1],values[2]);
+		String userSSN = con.bookRoom(custSSN,values[0],values[1],values[2],values[3],values[4]);
 		
 		System.out.println(values[3]);
 		System.out.println(values[4]);
