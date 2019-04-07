@@ -38,9 +38,12 @@ public class BookingConvert extends HttpServlet {
 			String[] values =request.getParameter("roominfo").split(",");
 			boolean isConverted = con.createRenting(empSSN, custSSN, values[0], values[1], values[2], values[3], values[4], 60.20);
 			if(isConverted) {
-				System.out.println("FLMM");
+				request.setAttribute("empSSN", empSSN);
+				response.sendRedirect("login_success.jsp?empSSN="+empSSN);
+				return;
 			}else {
-				System.out.println("FBT:)");
+				response.sendRedirect("login_failure.jsp");
+				return;
 			}
 		}else {
 			
@@ -50,9 +53,12 @@ public class BookingConvert extends HttpServlet {
 			String payment = request.getParameter("payment");
 			boolean isConverted = con.createRenting(empSSN, custSSN, roomno, startdate, enddate, Double.parseDouble(payment));
 			if(isConverted) {
-				System.out.println("FLMM");
+				request.setAttribute("empSSN", empSSN);
+				response.sendRedirect("login_success.jsp?empSSN="+empSSN);
+				return;
 			}else {
-				System.out.println("FBT:)");
+				response.sendRedirect("login_failure.jsp");
+				return;
 			}
 		}
 

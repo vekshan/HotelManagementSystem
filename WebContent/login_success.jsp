@@ -30,7 +30,7 @@ Enter customer SSN:<input type="text" id="custSSN" name="custSSN">
 
 <form method="post" action="BookingConvert" >
 					
-				<h4>Here are all booked rooms</h4>
+				<h4>Convert Renting</h4>
 
 				<select name ="roominfo">
 					<%
@@ -49,7 +49,7 @@ Enter customer SSN:<input type="text" id="custSSN" name="custSSN">
 								startdate = dateFormat.format(room.getStartdate());
 								enddate = dateFormat.format(room.getEnddate());
 								
-								roominfoChoice = "Room " + roomno +" at " + h_name +" hotel";		
+								roominfoChoice = "Room " + roomno +" at " + h_name +" hotel from " + startdate + " to "+ enddate;		
 								String val = chain_id+","+ h_name+","+ roomno +","+ startdate + ","+enddate;
 
 					%>					
@@ -72,7 +72,7 @@ Enter customer SSN:<input type="text" id="custSSN" name="custSSN">
 	</form>
 
 <form method="post" action="BookingConvert">
-<h4>Here are all booked rooms</h4>
+<h4>Create New Renting</h4>
 Customer SSN:<input type="number" id="custSSN" name="custSSN">
 Room no:<input type="number" id="roomno" name="roomno">
 Start date:<input type="date" id="startdate" name="startdate">
