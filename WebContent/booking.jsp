@@ -25,7 +25,7 @@
 			Welcome,
 			<%=CustName%><h4>
 				
-	
+	<a href="profile_edit.jsp?custSSN=<%=CustName%>">Edit Profile</a>
 	<form method="post" action="roomsearch">
 	<h4>Please enter your criteria before booking</h4>
 					  <label for="area">Area:</label>

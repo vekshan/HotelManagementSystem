@@ -101,6 +101,30 @@ public class  PostgreSqlConn{
 		return pwd;       
     }
 	
+	public boolean updateEmail(String newEmail, String custSSN) {
+		getConn();
+		 try{
+	        	
+	            
+	        	st = db.createStatement();
+	        	sql = "update project.customer set email='" +newEmail+"' where c_ssn ='"+custSSN+"'; ";
+	        	
+	        	System.out.print(sql);
+	            
+	            st.executeUpdate(sql);
+	            
+	            return true;
+
+	        }catch(SQLException e){
+	            e.printStackTrace();
+	            return false;
+	        }finally {
+	        	closeDB();
+	        }	      
+		
+		
+	}
+	
 	public boolean insertNewCustomer(String[] param){
 		getConn();
         try{
@@ -235,6 +259,60 @@ public  ArrayList<Room> searchRooms(int capacity, String area, String startdateS
 		
 	}
 	
+public  ArrayList<Room> getbookedRooms(String custSSN, String empSSN){
+		
+		getConn();
+		
+		ArrayList<Room> Rooms = new ArrayList<Room>();
+		int chain_id = 0;
+		String h_name="";
+		try{
+            ps = db.prepareStatement("select * from project.employee where e_ssn=?");
+            
+            ps.setInt(1, Integer.parseInt(empSSN));	               
+            rs = ps.executeQuery();
+
+			while(rs.next()) {
+				chain_id = rs.getInt("chain_id");
+				h_name = rs.getString("h_name");
+				
+			}
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally {
+        	closeDB();
+        }
+		
+		getConn();
+		
+		try {
+			ps = db.prepareStatement("select * from project.booking natural join project.room where c_ssn='"+custSSN+"' and chain_id='"+chain_id+"' and h_name='"+h_name+"';");
+			rs = ps.executeQuery();
+			while(rs.next()){
+				
+				chain_id =rs.getInt("chain_id");
+				h_name = rs.getString("h_name");
+				int room_no = rs.getInt("room_no");
+				int capacity = rs.getInt("capacity");
+				double price = rs.getDouble("price");
+				Date startdate =rs.getDate("startdate");
+				Date enddate = rs.getDate("enddate");
+				
+				Room room = new Room(chain_id,h_name,room_no,capacity,price,startdate,enddate);
+				Rooms.add(room);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+	    	closeDB();
+	    }
+					
+		return Rooms;
+		
+	}
+	
 	
 	
 	public String bookRoom(String custSSN, String chain_id, String h_name, String roomno, String startdateStr, String enddateStr){
@@ -271,6 +349,8 @@ public  ArrayList<Room> searchRooms(int capacity, String area, String startdateS
 		      
     }
 	
+
+	
 	public boolean createRenting(String e_ssn,String c_ssn, String chain_id, String h_name, String room_no,String startdateStr, String enddateStr, double payment) {
 		getConn();
 		
@@ -288,7 +368,7 @@ public  ArrayList<Room> searchRooms(int capacity, String area, String startdateS
 		try{
         	
 			
-			ps = db.prepareStatement("INSERT INTO project.renting (startdate, enddate, payment, c_ssn, e_ssn, chain_id, h_name, room_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			ps = db.prepareStatement("INSERT INTO project.renting (startdate, enddate, payment, c_ssn, e_ssn, chain_id, h_name, room_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 			ps.setDate(1,new java.sql.Date(startdate.getTime()));
         	ps.setDate(2, new java.sql.Date(enddate.getTime()));
         	ps.setDouble(3, payment);
@@ -312,6 +392,67 @@ public  ArrayList<Room> searchRooms(int capacity, String area, String startdateS
         }	       
 	}
 	
+	public boolean createRenting(String e_ssn,String c_ssn, String room_no,String startdateStr, String enddateStr, double payment) {
+		getConn();
+		
+		SimpleDateFormat textFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+    	java.util.Date startdate = null, enddate = null; 
+    	int chain_id=0;
+    	String h_name="";
+    	try { 
+			startdate = textFormat.parse(startdateStr);
+			enddate= textFormat.parse(enddateStr);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	try{
+            ps = db.prepareStatement("select * from project.employee where e_ssn=?");
+            
+            ps.setInt(1, Integer.parseInt(e_ssn));	               
+            rs = ps.executeQuery();
+
+			while(rs.next()) {
+				chain_id = rs.getInt("chain_id");
+				h_name = rs.getString("h_name");
+			}
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally {
+        	closeDB();
+        }
+    	
+    	getConn();
+		
+		try{
+        	
+			
+			ps = db.prepareStatement("INSERT INTO project.renting (startdate, enddate, payment, c_ssn, e_ssn, chain_id, h_name, room_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+			ps.setDate(1,new java.sql.Date(startdate.getTime()));
+        	ps.setDate(2, new java.sql.Date(enddate.getTime()));
+        	ps.setDouble(3, payment);
+        	ps.setInt(4, Integer.parseInt(c_ssn));
+        	ps.setInt(5, Integer.parseInt(e_ssn));
+        	ps.setInt(6,chain_id);
+        	ps.setString(7,h_name);
+        	ps.setInt(8,Integer.parseInt(room_no));
+        	
+        	
+        	ps.executeUpdate();
+			
+            
+            return true;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }finally {
+        	closeDB();
+        }	       
+	}
 	
 	public boolean convertToRenting(int bid, int e_ssn) {
 		getConn();

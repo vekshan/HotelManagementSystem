@@ -23,13 +23,13 @@ public class EmployeeloginServlet extends HttpServlet {
 		String pwd = req.getParameter("pwd");
 		
 		PostgreSqlConn con = new PostgreSqlConn();
-		String pwdfromdb = con.getuserinforbyempSSN(username);
+		String pwdfromdb = con.getuserinforbyempSSN(Integer.parseInt(username));
 		
 		
 		if (pwd.equals(pwdfromdb)) {			
 				System.out.println("success");
-				req.setAttribute("employee_id", username);
-				resp.sendRedirect("login_success.jsp?employee_id="+username);
+				req.setAttribute("empSSN", username);
+				resp.sendRedirect("login_success.jsp?empSSN="+username);
 				return;			
 		}
 		resp.sendRedirect("login_failure.jsp");
