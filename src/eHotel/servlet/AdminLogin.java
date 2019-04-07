@@ -13,10 +13,14 @@ import javax.servlet.http.HttpSession;
 import eHotel.connections.PostgreSqlConn;
 import eHotel.entities.Room;
 
-
-public class RoomsearchServlet extends HttpServlet {
+/**
+ * Servlet implementation class AdminLogin
+ */
+@WebServlet("/AdminLogin")
+public class AdminLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -29,30 +33,10 @@ public class RoomsearchServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
-		String area ="";
-		
-		String custSSN = request.getParameter("custName");
-		area = request.getParameter("area");
-		int capacity = Integer.parseInt(request.getParameter("capacity"));
-		String startdate = request.getParameter("startdate");
-		String enddate = request.getParameter("enddate");
-		
 		PostgreSqlConn con = new PostgreSqlConn();
-		ArrayList<Room> bookedRooms = con.getbookedRooms(custSSN);
-		ArrayList<Room> matchedRooms = con.searchRooms(capacity, area,startdate,enddate);
-		ArrayList<String> view1 =con.getView1();
-		
-		request.setAttribute("CustName", custSSN);
-		request.setAttribute("bookedRooms", bookedRooms);
-		request.setAttribute("allRooms", matchedRooms);
-		request.setAttribute("startdate", startdate);
-		request.setAttribute("enddate", enddate);
-		request.setAttribute("view1", view1);
-		request.getRequestDispatcher("booking.jsp").forward(request, response);
-		return;		
-		
-		
+		ArrayList<String> hotels = con.getAllHotels();
+		request.setAttribute("hotels", hotels);
+		request.getRequestDispatcher("RegisterEmployee.jsp").forward(request, response);
 	}
 
 }

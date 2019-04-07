@@ -2,9 +2,38 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Admin Login</title>
+<script>
+
+	function validate() {
+		var uname = document.getElementById("uname");
+		var upass = document.getElementById("upass");
+		if(uname.value == ""){
+			alert("username can't be null");
+			return false;
+		}
+		
+		else if(upass.value ==""){
+			alert("password can't be null");
+			return false;
+		}
+		else if(uname.value !=  "admin" || upass.value !=  "admin" ){
+			alert("wrong username or password");
+		}
+			return true;
+	}
+
+</script>
 </head>
 <body>
-
+This is the Admin login page.
+	<br>
+	<form method="post" action="AdminLogin">
+		user SSN:<input type="text" id="uname" name="userSSN"><br>
+		<br> password:<input type="password" id="upass" name="pwd"><br>
+		<br>
+		<button type="submit" value="submit" onclick="return validate();">submit</button>
+		<button type="reset" value="reset">reset</button>
+	</form>
 </body>
 </html>

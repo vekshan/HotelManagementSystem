@@ -49,9 +49,11 @@ public class RoombookServlet extends HttpServlet {
 			
 			ArrayList<Room> allRooms = con.getAllAvailRooms();
 			
+			ArrayList<String> view1 =con.getView1();
 			
 			req.setAttribute("CustName", custSSN);
 			req.setAttribute("bookedRooms", bookedRooms);
+			req.setAttribute("view1", view1);
 			req.setAttribute("allRooms", allRooms);
 
 			req.getRequestDispatcher("booking.jsp").forward(req, resp);

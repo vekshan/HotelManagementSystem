@@ -54,6 +54,27 @@ public class  PostgreSqlConn{
 			}
 	}
 	
+	public ArrayList<String> getView1() {
+		getConn();
+		
+		ArrayList<String> info = new ArrayList<String>();
+		try{
+            ps = db.prepareStatement("select * from project.view1");
+            	               
+            rs = ps.executeQuery();
+
+			while(rs.next()) {
+				info.add(Integer.toString(rs.getInt("no_of_rooms"))+" - "+rs.getString("area"));
+			}
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally {
+        	closeDB();
+        }
+		return info;  
+	}
+	
 	public String getuserinforbyempSSN(int param){
 		getConn();
 
@@ -101,6 +122,28 @@ public class  PostgreSqlConn{
 		return pwd;       
     }
 	
+	public ArrayList<String> getAllHotels() {
+		getConn();
+
+		ArrayList<String> hotels = new ArrayList<String>();
+		
+        try{
+            ps = db.prepareStatement("select * from project.hotel");
+            	               
+            rs = ps.executeQuery();
+
+			while(rs.next()) {
+				hotels.add(Integer.toString(rs.getInt(1)) +","+ rs.getString(2));
+			}
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally {
+        	closeDB();
+        }
+		return hotels;  
+	}
+	
 	public boolean updateEmail(String newEmail, String custSSN) {
 		getConn();
 		 try{
@@ -147,7 +190,27 @@ public class  PostgreSqlConn{
         }	       
     }
 	
-	
+	public boolean insertNewEmployee(String[] param){
+		getConn();
+        try{
+        	
+            
+        	st = db.createStatement();
+        	sql = "insert into project.employee values("+param[0]+",'"+param[1]+"','"+param[2]+"','"+param[3]+"','"+param[4]+"','"+param[5]+"')";
+        	
+        	System.out.print(sql);
+            
+            st.executeUpdate(sql);
+            
+            return true;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }finally {
+        	closeDB();
+        }	       
+    }
 	
 
 	

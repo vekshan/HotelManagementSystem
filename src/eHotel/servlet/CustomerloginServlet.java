@@ -45,13 +45,17 @@ public class CustomerloginServlet extends HttpServlet {
 
 			req.getRequestDispatcher("booking.jsp").forward(req, resp);
 			return;	*/
+			
+			ArrayList<String> view1 =con.getView1();
 			ArrayList<Room> bookedRooms = con.getbookedRooms(userSSN);
 			
 			ArrayList<Room> allRooms = con.getAllAvailRooms();
 			
+			
 			System.out.println(allRooms);
 			
 			req.setAttribute("CustName", userSSN);
+			req.setAttribute("view1", view1);
 			req.setAttribute("bookedRooms", bookedRooms);
 			req.setAttribute("allRooms", allRooms);
 

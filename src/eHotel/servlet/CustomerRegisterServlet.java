@@ -41,15 +41,17 @@ public class CustomerRegisterServlet extends HttpServlet{
 		if (pwdfromdb) {			
 				System.out.println("success");
 				
-				ArrayList<Room> bookedRooms = con.getAllAvailRooms();
+				ArrayList<Room> bookedRooms = con.getbookedRooms(custSSN);
+				ArrayList<String> view1 =con.getView1();
 				
 				ArrayList<Room> allRooms = con.getAllAvailRooms();
 				
 				System.out.println(allRooms);
 				
-				req.setAttribute("CustName", custFName);
+				req.setAttribute("CustName", custSSN);
 				req.setAttribute("bookedRooms", bookedRooms);
 				req.setAttribute("allRooms", allRooms);
+				req.setAttribute("view1", view1);
 
 				req.getRequestDispatcher("booking.jsp").forward(req, resp);
 				return;			

@@ -98,6 +98,25 @@
 				
 				
 				<button type="submit" onclick="return confirm('book?');">book</button>
+				
+				<h4>Number of Rooms per Area</h4>
+				<ul>
+					<%
+						Object obj2 = request.getAttribute("view1");
+						ArrayList<String> view1 = null;
+						if (obj2 instanceof ArrayList) {
+							view1 = (ArrayList<String>) obj2;
+						}
+						if (view1 != null) {
+							for (String v1 : view1) {
+							
+						%>
+					<li><%=v1%></li>
+					<%
+						}
+						}
+					%>
+				</ul>
 	</form>
 
 
